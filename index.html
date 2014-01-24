@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Cache-control" content="public">
+    <head>
+        <title>JSJaC Simple Client</title>
+		<link rel="stylesheet" href="/chatjs/ChatJs/Styles/jquery.chatjs.css">
+        <script type="text/javascript" src="JSJaC/src/JSJaC.js"></script>
+        <script src="/chatjs/ChatJs/Scripts/jquery-1.8.1.js" type="text/javascript"></script>
+		<script src="/chatjs/ChatJs/Scripts/jquery.autosize.min.js" type="text/javascript"></script>
+		<script src="/chatjs/ChatJs/Scripts/jquery.activity-indicator-1.0.0.min.js" type="text/javascript"></script>
+	    <script src="/chatjs/ChatJs/Scripts/jquery.chatjs.ejabberd.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+       
+		     
+       $(function(){ 
+       $("#login").click(function()
+       {
+       	document.userdata = new Object;
+       	document.userdata.http_base = "ws://primetimesingles.net/ws/";
+       	document.userdata.server= "test.primetimesingles.net";
+		document.userdata.username = $("#username").val();
+		document.userdata.password = $("#password").val();
+		document.userdata.displayName = $("#displayName").val();
+		document.userdata.profilePictureUrl = "profile_pic/self.png";
+       		doLogin(document.userdata);
+       });
+       
+       $("#chatwith").click(function()
+       {
+       	//userdata = {"Id":$("#c-username").val(),"Status":$("#c-status").val(),"Name":$("#c-displayName").val(), "ProfilePictureUrl":$("#c-profilePictureUrl").val()};
+       	
+       	userdata = $("#otherUser").val();
+       	
+       	if (chat.chatWindows[userdata])
+				chat.chatWindows[userdata].focus();
+			else
+                chat.createNewChatWindow(userdata);
+       });
+       
+       $("#updateUserList").click(function()
+       {
+       	chat.client.usersListChanged($("#updateUserListData").val());
+       });
+       
+       $("#quit").click(function()
+       {
+       	quit();
+       });
+       });
+
+		
+
+        
+
+        </script>
+        <style type="text/css">
+          
+            body {
+                font-family: "Bitstream Vera Sans", "Verdana", sans;
+                font-size: 0.8em;
+                margin: 12px;
+            }
+            h2 {
+                border-bottom: 1px solid grey;
+            }
+            input {
+                border: 1px solid grey;
+            }
+            #iResp {
+                width: 420px;
+                height: 260px;
+                overflow: auto;
+                border: 2px dashed grey;
+                padding: 4px;
+            }
+            #msgArea {
+                width: 420px;
+                height: 45px;
+                padding: 4px;
+                margin: 0;
+                border: 2px dashed grey;
+            }
+            .spaced {
+                margin-bottom: 4px;
+            }
+            .msg {
+                border-bottom: 1px solid black;
+            }
+            .error {
+                font-weight: bold;
+                color: red;
+            }
+            /*]]>*/
+        </style>
+    </head>
+    <body>
+        <h1><a href="#" onclick="location.reload();">JSJaC Simple Client</a></h1>
+		<div id="err"></div>
+        
+        <div id="login_pane">
+            <h2>Login</h2>
+          
+                <table>
+                    
+                    <tr>
+                        <th><label for="displayName">Display Name</label></th><td>
+                        <input type="text" name="displayName" id="displayName" value="chris 1" tabindex="3"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="username">Username</label></th><td>
+                        <input type="text" name="username" id="username" value="chris1" tabindex="4"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="password">Password</label></th><td>
+                        <input type="password" name="password" id="password" value="chris" tabindex="5" />
+                        </td>
+                    </tr>
+                    <!--tr>
+                        <th><label for="profilePictureUrl">profilePictureUrl</label></th><td>
+                        <input type="text" name="profilePictureUrl" id="profilePictureUrl" value="profile_pic/chris1.png" tabindex="6" />
+                        </td>
+                    </tr-->
+                    <tr>
+                        <td>&nbsp;</td><td>
+                        <input type="submit" id="login" value="Login" tabindex="7">
+                        </td>
+                    </tr>
+                </table>
+           
+        </div>
+
+        <div id="chat_pane" >
+            <b>Chat with:</b>
+            
+                    <select name="otherUser" id="otherUser" ><option value="chris@test.primetimesingles.net/jsjac_simpleclient">chris</option><option value="chris1@test.primetimesingles.net/jsjac_simpleclient">chris1</option><option value="chris2@test.primetimesingles.net/jsjac_simpleclient">chris2</option><option value="chris3@test.primetimesingles.net/jsjac_simpleclient">chris3</option><option value="chris4@test.primetimesingles.net/jsjac_simpleclient">chris4</option><option value="chris5@test.primetimesingles.net/jsjac_simpleclient">chris5</option></select>
+                    <input type="submit" id="chatwith" value="chat" tabindex="3"> 
+              
+                </div>
+                <input type="button" id="quit" value="LogOut" tabindex="4"> 
+       <!--div id="update-user-list" >
+            <b>update user list:</b>
+            		<a>sample data :</a><br>
+            		<p>[
+ {"Id":"chris@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris", "ProfilePictureUrl":"profile_pic/chris.png"   }   
+  , {"Id":"chris1@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris1", "ProfilePictureUrl":"profile_pic/chris1.png"   }   
+   , {"Id":"chris2@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris2", "ProfilePictureUrl":"profile_pic/chris2.png"   }   
+    , {"Id":"chris3@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris3", "ProfilePictureUrl":"profile_pic/chris3.png"   }  
+	 , {"Id":"chris4@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris4", "ProfilePictureUrl":"profile_pic/chris4.png"   }   
+	  , {"Id":"chris5@test.primetimesingles.net/jsjac_simpleclient","Status":1,"Name":"chris5", "ProfilePictureUrl":"profile_pic/chris5.png"   } ]</p><br>
+            		<input type="text" name="updateUserListData" id="updateUserListData" value=""  />
+	  
+                    <input type="submit" id="updateUserList" value="Update User List" > 
+              
+                </div-->         
+                
+    </body>
+</html>
